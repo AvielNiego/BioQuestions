@@ -1,0 +1,20 @@
+<div dir="rtl">
+  <h1>{{question.question}}</h1>
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div *ngFor="let a of question.getShuffledAnswers()">
+      <label [ngClass]="{ 'right-answer': question.isRightAnswer(a) && isSubmitPressed,
+                          'wrong-answer': !question.isRightAnswer(a) && isSubmitPressed && radio.checked}">
+        <input [(ngModel)]="question.selectedAnswer"
+               name="answer"
+               type="radio"
+               required
+               value="{{a}}" #radio>
+        {{a}}
+      </label>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary" [disabled]="isSubmitPressed">ענה</button>
+      <button type="button" class="btn" [disabled]="!isSubmitPressed" (click)="onNextQuestionPressed()">הבא</button>
+    </div>
+  </form>
+</div>

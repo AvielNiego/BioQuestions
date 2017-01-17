@@ -1,0 +1,9 @@
+.right-answer {
+  color: green;
+  font-weight: bold;
+}
+
+.wrong-answer {
+  font-weight: bold;
+  color: red;
+}
