@@ -1,10 +1,19 @@
 export class Question {
   private shuffledAnswers: string[] = [];
   public selectedAnswer: string = '';
+  public isSubmitted: boolean = false;
 
   constructor(public question: string,
               public answers: string[]) {
+    this.shuffleAnswers();
+  }
+
+  private shuffleAnswers() {
     this.shuffledAnswers = Question.shuffle(this.answers);
+  }
+
+  submitAnswer() {
+    this.isSubmitted = true;
   }
 
   isRightAnswer(answer: string): boolean {
@@ -31,5 +40,11 @@ export class Question {
       shuffledArray[randomIndex] = temporaryValue;
     }
     return shuffledArray;
+  }
+
+  resetQuestion() {
+    this.selectedAnswer = "";
+    this.isSubmitted = false;
+    this.shuffleAnswers();
   }
 }

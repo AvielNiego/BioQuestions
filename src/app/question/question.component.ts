@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ViewChild} from "@angular/core";
 import {Question} from "../question";
 import {QuestionsService} from "./questions.service";
 import {NgForm} from "@angular/forms";
@@ -11,36 +11,61 @@ import {Router, ActivatedRoute} from "@angular/router";
 })
 export class QuestionComponent{
   question: Question;
-  isSubmitPressed: boolean = false;
-  questionForm: NgForm;
+  questionNumber: number;
+  @ViewChild("questionForm") questionForm: NgForm;
 
   constructor(private questionsService: QuestionsService, private activatedRoute: ActivatedRoute, private router: Router) {
     this.activatedRoute.params.subscribe(
-      (params) => this.resetQuestion(this.questionsService.getQuestionAt(params['id']))
+      (params) => {
+        this.resetQuestion(this.questionsService.getQuestion(params['id']));
+        this.questionNumber = +(params['id']);
+      }
     );
   }
 
-  onSubmit(form: NgForm){
-    this.isSubmitPressed = true;
-    this.questionForm = form;
-    if (this.question.isRightAnswer(this.question.selectedAnswer))
-      this.questionsService.addRightAnswer();
+  onSubmit(){
+    this.question.submitAnswer();
   }
 
   onNextQuestionPressed() {
-    this.resetQuestion(this.questionsService.getNextQuestion());
+    if (this.question.isSubmitted)
+      this.router.navigate(['/', this.questionNumber + 1]);
+  }
+
+  resetQuestions() {
+    this.questionsService.resetWithoutCorrectAnsweredQuestions();
+    this.router.navigate(['/1']);
   }
 
   private resetQuestion(nextQuestion: Question) {
     if (nextQuestion == null)
     {
-      this.router.navigate(['/0']);
+      this.router.navigate(['/1']);
       return;
     }
 
     this.question = nextQuestion;
-    this.isSubmitPressed = false;
-    if (this.questionForm)
+    if (this.questionForm && nextQuestion.selectedAnswer === "")
       this.questionForm.resetForm();
+  }
+
+  onKeyPressed(event: KeyboardEvent) {
+    let key = event.key;
+    switch (key)
+    {
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+        this.question.selectedAnswer = this.question.getShuffledAnswers()[(+key) - 1];
+        break;
+      case "Enter":
+        if (this.questionForm.valid)
+          this.onSubmit();
+        break;
+      case "ArrowLeft":
+        this.onNextQuestionPressed();
+        break;
+    }
   }
 }

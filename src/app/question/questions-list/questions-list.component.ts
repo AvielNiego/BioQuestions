@@ -8,10 +8,8 @@ import {Question} from "../../question";
   styleUrls: ['./questions-list.component.css']
 })
 export class QuestionsListComponent implements OnInit {
-  questions: Question[];
 
-  constructor(private questionsService: QuestionsService) {
-    this.questions = questionsService.questions;
+  constructor(public questionsService: QuestionsService) {
   }
 
   ngOnInit() {

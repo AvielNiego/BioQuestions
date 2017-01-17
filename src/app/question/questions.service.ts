@@ -1,19 +1,27 @@
 import {Question} from "../question";
 import {questionsBank} from "./questions-bank";
+import {Injectable} from "@angular/core";
 
+@Injectable()
 export class QuestionsService {
   private askedQuestionsAmountObserver = () => {};
   questions: Question[] = [];
-  private index: number = -1;
-  private rightAnswers: number = 0;
 
   constructor(){
     this.loadQuestions();
   }
 
   private loadQuestions() {
-    questionsBank.forEach((q) => this.questions.push(new Question(q['question'], q["Answers"])))
+    questionsBank.forEach((q) => this.questions.push(new Question(q['question'], q["Answers"])));
     this.questions = QuestionsService.shuffle(this.questions);
+  }
+
+  resetWithoutCorrectAnsweredQuestions() {
+    let oldQuestions = this.questions;
+    this.questions = [];
+    oldQuestions.filter((q) => !q.isRightAnswer(q.selectedAnswer)).forEach((q) => this.questions.push(q));
+    this.questions.forEach((q) => q.resetQuestion());
+    this.askedQuestionsAmountObserver();
   }
 
   private static shuffle(array: Array<any>) {
@@ -40,26 +48,18 @@ export class QuestionsService {
   }
 
   getRightAnswersAmount() {
-    return this.rightAnswers;
+    let c = 0;
+    for (let q of this.questions)
+      c = q.isRightAnswer(q.selectedAnswer) ? c + 1 : c;
+    return c;
   }
 
-  addRightAnswer() {
-    this.rightAnswers++;
-  }
-
-  getNextQuestion(): Question {
-    this.index++;
-    this.askedQuestionsAmountObserver();
-    return this.questions.length <= this.index ? null : this.questions[this.index];
-  }
-
-  getQuestionAt(index: number): Question {
-    if (index >= this.questions.length) {
+  getQuestion(index: number): Question {
+    if (index > this.questions.length || index < 1) {
       return null;
     }
-    this.index = index;
     this.askedQuestionsAmountObserver();
-    return this.questions[index];
+    return this.questions[index - 1];
   }
 
   getAnsweredQuestionsAmount() {

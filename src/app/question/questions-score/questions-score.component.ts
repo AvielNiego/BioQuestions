@@ -18,6 +18,7 @@ export class QuestionsScoreComponent {
     questionsService.addAskedQuestionsAmountObserver(() => {
       this.answeredQuestionsCounter = questionsService.getAnsweredQuestionsAmount();
       this.rightAnswers = questionsService.getRightAnswersAmount();
+      this.questionsAmount = questionsService.getQuestionsAmount();
     })
   }
 
