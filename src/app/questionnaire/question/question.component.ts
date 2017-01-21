@@ -37,7 +37,7 @@ export class QuestionComponent implements OnDestroy{
 
   onNextQuestionPressed() {
     if (this.question.isSubmitted)
-      this.router.navigate(['/', this.questionNumber + 1]);
+      this.router.navigate(['/questionnaire', this.questionNumber + 1]);
   }
 
   resetQuestions() {
