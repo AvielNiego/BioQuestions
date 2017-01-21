@@ -1,19 +1,32 @@
 import {Question} from "../question";
-import {questionsBank} from "./questions-bank";
-import {Injectable} from "@angular/core";
+import {Injectable, OnDestroy} from "@angular/core";
+import {QuestionsProviderService} from "../questions-provider.service";
+import {Subscription} from "rxjs";
 
 @Injectable()
-export class QuestionsService {
+export class QuestionnaireService implements OnDestroy{
   private askedQuestionsAmountObserver = () => {};
   questions: Question[] = [];
+  private subscription: Subscription;
 
-  constructor(){
+  constructor(private questionsProvider: QuestionsProviderService){
     this.loadQuestions();
   }
 
   private loadQuestions() {
-    questionsBank.forEach((q) => this.questions.push(new Question(q['question'], q["Answers"])));
-    this.questions = QuestionsService.shuffle(this.questions);
+    this.subscription = this.questionsProvider.retrieveQuestions().subscribe(
+      q => this.onQuestionsReceive(q),
+      e => console.log(e)
+    );
+  }
+
+  private onQuestionsReceive(q) {
+    this.questions = q;
+    this.questions = QuestionnaireService.shuffle(this.questions);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   resetWithoutCorrectAnsweredQuestions() {

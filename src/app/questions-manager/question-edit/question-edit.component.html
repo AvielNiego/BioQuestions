@@ -1,0 +1,81 @@
+<div class="row" dir="rtl">
+  <div class="alert alert-danger" role="alert"><strong>זהירות!</strong> כל שינוי ישמר עבור כולם!</div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-12">
+            <button type="submit" class="btn btn-success pull-right" [disabled]="!questionForm.valid">שמור</button>
+            <button style="margin-left: 3px; margin-right: 3px" class="btn pull-right" (click)="onCancel()">בטל</button>
+            <button class="btn btn-danger pull-left" (click)="onDelete()" *ngIf="questionId">מחק</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="question" class="pull-right">שאלה</label>
+            <input
+              type="text"
+              id="question"
+              dir="rtl"
+              class="form-control"
+              formControlName="question">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="right-answer" class="pull-right">תשובה נכונה</label>
+            <input
+              type="text"
+              id="right-answer"
+              dir="rtl"
+              class="form-control"
+              formControlName="right-answer">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <ul class="list-group" formArrayName="wrong-answers">
+            <div class="row" *ngFor="let answer of questionForm.controls['wrong-answers'].controls; let i = index">
+              <div class="col-sm-2">
+                <button class="btn btn-danger" (click)="onRemoveWrongAnswer(i)">X</button>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  id="wrong-answer"
+                  type="text"
+                  style="direction: rtl"
+                  class="form-control"
+                  dir="rtl"
+                  [value]="answer.value">
+              </div>
+              <br><br>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="form-group row">
+      <div class="col-md-2">
+        <button
+          type="button"
+          class="btn btn-primary" (click)="onAddWrongAnswer(newWrongAnswer.value)">+
+        </button>
+      </div>
+      <div class="col-md-10">
+        <input type="text"
+               dir="rtl"
+               class="form-control" #newWrongAnswer>
+      </div>
+    </div>
+  </div>
+</div>

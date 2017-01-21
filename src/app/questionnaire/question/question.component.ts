@@ -1,26 +1,34 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, ViewChild, OnDestroy, Output} from "@angular/core";
 import {Question} from "../question";
 import {QuestionsService} from "./questions.service";
 import {NgForm} from "@angular/forms";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'bq-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.css']
 })
-export class QuestionComponent{
+export class QuestionComponent implements OnDestroy{
+
+  private subscription: Subscription;
+
   question: Question;
-  questionNumber: number;
+  @Output() questionNumber: number;
   @ViewChild("questionForm") questionForm: NgForm;
 
   constructor(private questionsService: QuestionsService, private activatedRoute: ActivatedRoute, private router: Router) {
-    this.activatedRoute.params.subscribe(
+    this.subscription = this.activatedRoute.params.subscribe(
       (params) => {
         this.resetQuestion(this.questionsService.getQuestion(params['id']));
         this.questionNumber = +(params['id']);
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onSubmit(){
@@ -38,12 +46,6 @@ export class QuestionComponent{
   }
 
   private resetQuestion(nextQuestion: Question) {
-    if (nextQuestion == null)
-    {
-      this.router.navigate(['/1']);
-      return;
-    }
-
     this.question = nextQuestion;
     if (this.questionForm && nextQuestion.selectedAnswer === "")
       this.questionForm.resetForm();

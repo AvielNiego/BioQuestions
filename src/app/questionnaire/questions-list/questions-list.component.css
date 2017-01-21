@@ -1,0 +1,8 @@
+.not-opened {
+  font-weight: bold;
+}
+
+.scrollable-div {
+  overflow: auto;
+  max-height: 100vh;
+}

@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="input-group">
+      <input type="text" class="form-control" #search (keyup)="0" dir="rtl">
+      <span class="input-group-addon glyphicon glyphicon-search"></span>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group">
+      <ng-container *ngFor="let q of questionsService.questions; let i = index">
+        <a class="list-group-item clearfix"
+           dir="rtl"
+           *ngIf="!search.value || q.question.includes(search.value)"
+           [routerLink]="[i]">
+          <div class="pull-right">
+            {{i + 1}}. {{q.question.replace(':', '')}}
+          </div>
+        </a>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 <div (window:keydown)="onKeyPressed($event)"><div>
-<div dir="rtl">
+<div dir="rtl" *ngIf="question">
   <h1>{{question.question}}</h1>
   <form (ngSubmit)="onSubmit(f)" #questionForm="ngForm">
     <div *ngFor="let a of question.getShuffledAnswers()">
