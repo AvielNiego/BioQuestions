@@ -1,13 +1,17 @@
 import {BrowserModule} from "@angular/platform-browser";
 import {NgModule} from "@angular/core";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
-import {QuestionComponent} from "./question/question.component";
+import {QuestionComponent} from "./questionnaire/question/question.component";
 import {HeaderComponent} from "./header.component";
-import {QuestionsScoreComponent} from "./question/questions-score/questions-score.component";
-import { QuestionsListComponent } from './question/questions-list/questions-list.component';
+import {QuestionsScoreComponent} from "./questionnaire/questions-score/questions-score.component";
+import { QuestionsListComponent } from './questionnaire/questions-list/questions-list.component';
 import {routing} from "./app.routing";
+import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
+import { QuestionsManagerComponent } from './questions-manager/questions-manager.component';
+import { QuestionsEditListComponent } from './questions-manager/questions-edit-list/questions-edit-list.component';
+import { QuestionEditComponent } from './questions-manager/question-edit/question-edit.component';
 
 @NgModule({
   declarations: [
@@ -15,11 +19,16 @@ import {routing} from "./app.routing";
     QuestionComponent,
     HeaderComponent,
     QuestionsScoreComponent,
-    QuestionsListComponent
+    QuestionsListComponent,
+    QuestionnaireComponent,
+    QuestionsManagerComponent,
+    QuestionsEditListComponent,
+    QuestionEditComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     routing
   ],

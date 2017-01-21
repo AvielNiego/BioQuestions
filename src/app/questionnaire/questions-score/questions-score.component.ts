@@ -1,24 +1,24 @@
 import {Component} from "@angular/core";
-import {QuestionsService} from "../questions.service";
+import {QuestionnaireService} from "../questionnaire.service";
 
 @Component({
   selector: 'bq-questions-score',
-  templateUrl: './questions-score.component.html',
-  styleUrls: ['./questions-score.component.css']
+  templateUrl: 'questions-score.component.html',
+  styleUrls: ['questions-score.component.css']
 })
 export class QuestionsScoreComponent {
   questionsAmount: number;
   rightAnswers: number = 0;
   answeredQuestionsCounter: number;
 
-  constructor(questionsService: QuestionsService){
-    this.questionsAmount = questionsService.getQuestionsAmount();
-    this.answeredQuestionsCounter = questionsService.getAnsweredQuestionsAmount();
-    this.rightAnswers = questionsService.getRightAnswersAmount();
-    questionsService.addAskedQuestionsAmountObserver(() => {
-      this.answeredQuestionsCounter = questionsService.getAnsweredQuestionsAmount();
-      this.rightAnswers = questionsService.getRightAnswersAmount();
-      this.questionsAmount = questionsService.getQuestionsAmount();
+  constructor(questionnaireService: QuestionnaireService){
+    this.questionsAmount = questionnaireService.getQuestionsAmount();
+    this.answeredQuestionsCounter = questionnaireService.getAnsweredQuestionsAmount();
+    this.rightAnswers = questionnaireService.getRightAnswersAmount();
+    questionnaireService.addAskedQuestionsAmountObserver(() => {
+      this.answeredQuestionsCounter = questionnaireService.getAnsweredQuestionsAmount();
+      this.rightAnswers = questionnaireService.getRightAnswersAmount();
+      this.questionsAmount = questionnaireService.getQuestionsAmount();
     })
   }
 

@@ -1,27 +1,27 @@
 import {Component, ViewChild, OnDestroy, Output} from "@angular/core";
-import {Question} from "../question";
-import {QuestionsService} from "./questions.service";
 import {NgForm} from "@angular/forms";
 import {Router, ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
+import {Question} from "../../question";
+import {QuestionnaireService} from "../questionnaire.service";
 
 @Component({
   selector: 'bq-question',
-  templateUrl: './question.component.html',
-  styleUrls: ['./question.component.css']
+  templateUrl: 'question.component.html',
+  styleUrls: ['question.component.css']
 })
 export class QuestionComponent implements OnDestroy{
 
   private subscription: Subscription;
 
   question: Question;
-  @Output() questionNumber: number;
+  questionNumber: number;
   @ViewChild("questionForm") questionForm: NgForm;
 
-  constructor(private questionsService: QuestionsService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private questionnaireService: QuestionnaireService, private activatedRoute: ActivatedRoute, private router: Router) {
     this.subscription = this.activatedRoute.params.subscribe(
       (params) => {
-        this.resetQuestion(this.questionsService.getQuestion(params['id']));
+        this.resetQuestion(this.questionnaireService.getQuestion(params['id']));
         this.questionNumber = +(params['id']);
       }
     );
@@ -41,7 +41,7 @@ export class QuestionComponent implements OnDestroy{
   }
 
   resetQuestions() {
-    this.questionsService.resetWithoutCorrectAnsweredQuestions();
+    this.questionnaireService.resetWithoutCorrectAnsweredQuestions();
     this.router.navigate(['/1']);
   }
 

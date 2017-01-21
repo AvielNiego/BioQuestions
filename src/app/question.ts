@@ -4,7 +4,8 @@ export class Question {
   public isSubmitted: boolean = false;
 
   constructor(public question: string,
-              public answers: string[]) {
+              public answers: string[],
+              public id: string) {
     this.shuffleAnswers();
   }
 
