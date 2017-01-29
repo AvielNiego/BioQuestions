@@ -5,11 +5,12 @@ import {Subscription} from "rxjs";
 
 @Injectable()
 export class QuestionnaireService implements OnDestroy{
+
   questions: Question[] = [];
   private subscription: Subscription;
   private askedQuestionsAmountObserver = () => {};
   public questionsRetrieveObservable = new EventEmitter<Question[]>();
-  private shuffledQuestions: Question[] = [];
+  shuffledQuestions: Question[] = [];
 
   constructor(private questionsProvider: QuestionsProviderService){
     this.loadQuestions();
@@ -70,12 +71,12 @@ export class QuestionnaireService implements OnDestroy{
     return c;
   }
 
-  getQuestion(index: number): Question {
+  getShuffledQuestion(index: number): Question {
     if (index > this.shuffledQuestions.length || index < 1) {
       return null;
     }
     this.askedQuestionsAmountObserver();
-    return this.questions[index - 1];
+    return this.shuffledQuestions[index - 1];
   }
 
   getAnsweredQuestionsAmount() {

@@ -1,6 +1,6 @@
 <div id="list-group scrollable-div">
   <a class="list-group-item"
-     *ngFor="let q of questionnaireService.questions;let i = index"
+     *ngFor="let q of questionnaireService.shuffledQuestions;let i = index"
      [routerLink]="['..', i + 1]"
      [ngClass]="{'not-opened': q.selectedAnswer === '',
                  'list-group-item-success': q.isSubmitted && q.isRightAnswer(q.selectedAnswer),

@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnDestroy, Output} from "@angular/core";
+import {Component, ViewChild, OnDestroy, Output, OnInit} from "@angular/core";
 import {NgForm} from "@angular/forms";
 import {Router, ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -10,7 +10,7 @@ import {QuestionnaireService} from "../questionnaire.service";
   templateUrl: 'question.component.html',
   styleUrls: ['question.component.css']
 })
-export class QuestionComponent implements OnDestroy{
+export class QuestionComponent implements OnInit, OnDestroy{
 
   private subscription: Subscription;
 
@@ -21,10 +21,13 @@ export class QuestionComponent implements OnDestroy{
   constructor(private questionnaireService: QuestionnaireService, private activatedRoute: ActivatedRoute, private router: Router) {
     this.subscription = this.activatedRoute.params.subscribe(
       (params) => {
-        this.resetQuestion(this.questionnaireService.getQuestion(params['id']));
+        this.resetQuestion(this.questionnaireService.getShuffledQuestion(params['id']));
         this.questionNumber = +(params['id']);
       }
     );
+  }
+
+  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
@@ -42,7 +45,7 @@ export class QuestionComponent implements OnDestroy{
 
   resetQuestions() {
     this.questionnaireService.resetWithoutCorrectAnsweredQuestions();
-    this.router.navigate(['/1']);
+    this.router.navigate(['/questionnaire','1']);
   }
 
   private resetQuestion(nextQuestion: Question) {
